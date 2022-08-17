@@ -151,7 +151,7 @@ const Register = () => {
               helperText={formik.touched.organisation && formik.errors.organisation}
               label="Organisation"
               margin="normal"
-              name="name"
+              name="organisation"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               value={formik.values.organisation}
