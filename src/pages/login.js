@@ -1,5 +1,5 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Box, Button, Container, Link, TextField, Typography } from '@mui/material';
+import { Box, Button,Grid, Container, Link, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import Head from 'next/head';
 import NextLink from 'next/link';
@@ -9,6 +9,8 @@ import store from 'src/store';
 import { setUser } from 'src/store/userSlice';
 import * as Yup from 'yup';
 import axios from "axios";
+import { Facebook as FacebookIcon } from '../icons/facebook';
+import { Google as GoogleIcon } from '../icons/google';
 
 const Login = () => {
   const router = useRouter();
@@ -78,6 +80,64 @@ const Login = () => {
                 variant="h4"
               >
                 Sign in
+              </Typography>
+              <Typography
+                color="textSecondary"
+                gutterBottom
+                variant="body2"
+              >
+                Sign in on the internal platform
+              </Typography>
+            </Box>
+            <Grid
+              container
+              spacing={3}
+            >
+              <Grid
+                item
+                xs={12}
+                md={6}
+              >
+                <Button
+                  color="info"
+                  fullWidth
+                  startIcon={<FacebookIcon />}
+                  onClick={formik.handleSubmit}
+                  size="large"
+                  variant="contained"
+                >
+                  Login with Microsoft
+                </Button>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                md={6}
+              >
+                <Button
+                  fullWidth
+                  color="error"
+                  startIcon={<GoogleIcon />}
+                  onClick={formik.handleSubmit}
+                  size="large"
+                  variant="contained"
+                >
+                  Login with Google
+                </Button>
+              </Grid>
+            </Grid>
+            <Box
+              sx={{
+                pb: 1,
+                pt: 3
+              }}
+            >
+              <Typography
+                align="center"
+                color="textSecondary"
+                variant="body1"
+              >
+                or login with email address
               </Typography>
             </Box>
             <TextField

@@ -72,6 +72,7 @@ const Register = () => {
         if (!rsp.data.success) {
           console.log(rsp.data);
           console.log('Failed to create user.');
+          actions.setSubmitting(false)
           return;
         }
         console.log('Created new user!');
