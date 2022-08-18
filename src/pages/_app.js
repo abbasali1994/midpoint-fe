@@ -13,7 +13,7 @@ import store from "src/store";
 import { theme } from '../theme';
 import { createEmotionCache } from '../utils/create-emotion-cache';
 import { Auth0Provider } from "@auth0/auth0-react";
-import { getConfig } from "../../config";
+import { getConfig } from "../config";
 
 
 
