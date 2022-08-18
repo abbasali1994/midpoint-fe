@@ -12,6 +12,10 @@ import { setUser } from 'src/store/userSlice';
 import store from "src/store";
 import { theme } from '../theme';
 import { createEmotionCache } from '../utils/create-emotion-cache';
+import { Auth0Provider } from "@auth0/auth0-react";
+import { getConfig } from "../../config";
+
+
 
 const clientSideEmotionCache = createEmotionCache();
 axios.defaults.withCredentials = true;
@@ -31,7 +35,18 @@ const App = (props) => {
     });
   }, [])
 
+  const config = getConfig();
+
+  const providerConfig = {
+    domain: config.domain,
+    clientId: config.clientId,
+    ...(config.audience ? { audience: config.audience } : null)
+  };
+
   return (
+    <Auth0Provider
+    {...providerConfig}
+  >
     <Provider store={store}>
       <CacheProvider value={emotionCache}>
         <Head>
@@ -51,6 +66,7 @@ const App = (props) => {
         </LocalizationProvider>
       </CacheProvider>
     </Provider>
+    </Auth0Provider>
 
   );
 };

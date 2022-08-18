@@ -11,9 +11,11 @@ import * as Yup from 'yup';
 import axios from "axios";
 import { Facebook as FacebookIcon } from '../icons/facebook';
 import { Google as GoogleIcon } from '../icons/google';
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Login = () => {
   const router = useRouter();
+  const {loginWithPopup ,logout} = useAuth0();
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -118,7 +120,7 @@ const Login = () => {
                   fullWidth
                   color="error"
                   startIcon={<GoogleIcon />}
-                  onClick={formik.handleSubmit}
+                  onClick={() => loginWithPopup()}
                   size="large"
                   variant="contained"
                 >
