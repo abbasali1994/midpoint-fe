@@ -5,8 +5,9 @@ import Head from 'next/head';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { SERVER_URL } from 'src/config';
-import store from 'src/store';
+import { useEffect } from 'react';
 import { setUser } from 'src/store/userSlice';
+import store from "src/store";
 import * as Yup from 'yup';
 import axios from "axios";
 import { Facebook as FacebookIcon } from '../icons/facebook';
@@ -15,7 +16,18 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const Login = () => {
   const router = useRouter();
-  const {loginWithPopup ,logout} = useAuth0();
+  const {loginWithRedirect} = useAuth0();
+  useEffect(() => {
+    axios.post(SERVER_URL + '/user/checkauth').then((rsp) => {
+      if (!rsp.data.success) {
+        store.dispatch(setUser(false));
+        return;
+      }
+      store.dispatch(setUser(rsp.data.user));
+      router.push("/")
+    });
+  }, [])
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -52,7 +64,7 @@ const Login = () => {
   return (
     <>
       <Head>
-        <title>Login </title>
+        <title>Login</title>
       </Head>
       <Box
         component="main"
@@ -104,7 +116,7 @@ const Login = () => {
                   color="info"
                   fullWidth
                   startIcon={<FacebookIcon />}
-                  onClick={formik.handleSubmit}
+                  onClick={() => loginWithRedirect({connection: 'windowslive'})}
                   size="large"
                   variant="contained"
                 >
@@ -120,7 +132,7 @@ const Login = () => {
                   fullWidth
                   color="error"
                   startIcon={<GoogleIcon />}
-                  onClick={() => loginWithPopup()}
+                  onClick={() => loginWithRedirect({connection: 'google-oauth2'})}
                   size="large"
                   variant="contained"
                 >

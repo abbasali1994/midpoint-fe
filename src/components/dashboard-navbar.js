@@ -12,6 +12,7 @@ import { useState } from "react";
 import axios from "axios";
 import { SERVER_URL } from 'src/config';
 import { Logo } from './logo';
+import { useAuth0 } from "@auth0/auth0-react";
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -20,6 +21,7 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
 
 export const DashboardNavbar = (props) => {
   const user = useSelector(userAccount)
+  const {isLoading} = useAuth0();
   const { onSidebarOpen, ...other } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
@@ -93,7 +95,7 @@ export const DashboardNavbar = (props) => {
             src="/static/images/avatars/avatar_6.png"
           >
             <UserCircleIcon fontSize="small" />
-          </Avatar> :
+          </Avatar> : isLoading?"Loading":
             <NextLink
               href="/login"
               passHref
@@ -119,8 +121,11 @@ DashboardNavbar.propTypes = {
 };
 
 const AccountPopup = ({ open, handleClose, anchorEl }) => {
+  const {isAuthenticated,isLoading, logout} = useAuth0();
   const handleLogout = () => {
-    axios.post(SERVER_URL + '/user/logout').then(()=>{
+    if(isAuthenticated) {logout();
+      store.dispatch(setUser(false))}
+    else axios.post(SERVER_URL + '/user/logout').then(()=>{
       store.dispatch(setUser(false))
     })
     handleClose()

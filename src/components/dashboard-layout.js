@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useAuth0 } from "@auth0/auth0-react";
 import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { useEffect, useState } from 'react';
+import store from "src/store";
+import { setUser } from 'src/store/userSlice';
 import { DashboardNavbar } from './dashboard-navbar';
-import { DashboardSidebar } from './dashboard-sidebar';
 
 const DashboardLayoutRoot = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -17,7 +19,13 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
 export const DashboardLayout = (props) => {
   const { children } = props;
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-
+  const {user, isAuthenticated} = useAuth0();
+  
+  useEffect(()=>{
+    if(isAuthenticated) {
+      store.dispatch(setUser(user))
+    }
+  },[isAuthenticated,user])
   return (
     <>
       <DashboardLayoutRoot>
